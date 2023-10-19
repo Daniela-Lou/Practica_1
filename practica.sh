@@ -1,15 +1,11 @@
 #!/bin/bash
 
 opcio='XX'
-
 codiP='XX'
 codiE='XX'
 
-#cadena ='(("\w+( +\w+)+")|\w+)'
-
-while [[ $opcio!=q ]]; do 
+while [[ $opcio!=q ]]; do #bucle
 	read -p "Escull una opció: " opcio
-	#echo $opcio
 	case $opcio in 
 		'q') 		
 			echo "Sortint de l'aplicació"
@@ -21,45 +17,35 @@ while [[ $opcio!=q ]]; do
 			;;
 		'sc')
 			echo "Nom del pais" ; read pais
-			if [[ -z "$pais" ]] #si la variable està buida (intro)
+			if [[ -z "$pais" ]] #si es fa intro
 			then
 				codiP=$codiP
-			else #si s'ha introduit alguna cosa
-				codiP=$(cut -d ',' -f7,8 cities.csv | grep -w $pais |cut -d',' -f1| uniq) #grep -w: paraules
-				if [[ -z $codiP ]]; then #si el pais no està existeix en el document
-					codiP='XX'
-				else 
-					echo $codiP 
+			else 
+				codiP=$(cut -d ',' -f7,8 cities.csv | grep -w $pais |cut -d',' -f1| uniq) 
+				if [[ -z $codiP ]]; then #si el pais no existeix en el document
+					codiP='XX' 
 				fi
 			fi
-			echo $codiP
 			;;
 		'se')
 			read -p "Nom de l'estat: " estat
 			if [[ -z "$estat" ]] #si fa intro
 			then 
 				codiE=$codiE
-			else #existeix en el document o la ciutat té 'codiP' (està al pais escullit) 
-				#if [[ -n "grep $estat cities.csv" ]]; # && [[ (cut -d ',' -f5,7 cities.csv | grep $estat | uniq | cut -d ',' -f1) != $codiP ]]
-				#then	
+			else #si existeix en el document o la ciutat té codiP
 				codiE=$(cut -d',' -f4,5,7 cities.csv | grep -w $estat| grep -w $codiP| cut -d',' -f1| uniq ) 
-				#cut -d',' -f4,5,7 cities.csv | grep -w Zaragoza| grep -w ES | uniq | cut -d',' -f1
-				if [[ -z $codiE ]] #|| [[ -z "cut -d',' -f4,7 cities.csv | grep $codiP| grep -w $codiE| uniq" ]]
+				if [[ -z $codiE ]] #significa que l'estat no pertany al pais 
 				then
 					codiE='XX'
-				else
-					echo $codiE
 				fi
 			fi
-			echo $codiE
 			;;
 		'le')
-			cut -d',' -f4,5,7 cities.csv | grep -w $codiP | cut -d',' -f1,2 | uniq 
+			cut -d',' -f4,5,7 cities.csv | grep -w $codiP | cut -d',' -f1,2 | uniq | column -s',' -t 
 			
 			;;
 		'lcp')
 			cut -d',' -f2,7,11 cities.csv | grep -w $codiP | cut -d',' -f1,3 | column -s',' -t
-			
 			;;
 
 		'ecp')
@@ -73,20 +59,27 @@ while [[ $opcio!=q ]]; do
 		
 		'ece')
 			cut -d',' -f2,4,7,11 cities.csv | grep -w $codiP | grep -w $codiE | cut -d',' -f1,4 | column -s',' -t > PoblacionsEstat.csv
-			mv PoblacionsEstat.csv ${codiP}_${codiE}.csv 
-			;;#La part de l'arxiu està igual que a l'ordre "ecp"
+			mv PoblacionsEstat.csv ${codiP}_${codiE}.csv #Igual que l'ordre ecp
+			;;
 		'gwd')
 			read -p "Nom d'una població: " poblacio
 			wikiData=$(cut -d',' -f2,4,7,11 cities.csv | grep -w $codiP | grep -w $codiE | grep -w ^$poblacio | cut -d',' -f4)
-			echo $wikiData
 			if [[ -n $wikiData ]]
 			then
 				curl https://www.wikidata.org/wiki/Special:EntityData/$widiData.json > wiki.json
-				mv wiki.json $wikiData.json
+				mv wiki.json $wikiData.json #Igual que l'ordre ecp i ece
 			fi
 			;;
 		'est') 
-			awk -F',' 'BEGIN { nord=0.0; sud=0.0; est=0.0; oest=0.0; nu=0.0; wiki=0.0 } { if (NR > 0) { nord += ( $9 > 0.0); sud += ( $9 < 0.0 ); est += ($10 > 0.0); oest += ($10 < 0.0); wiki += ($11 == ""); nu += ($10 == 0) && ($9 == 0) } } END { print "Nord", nord, "Sud", sud, "Est", est, "Oest", oest, "No ubicació", nu, "No WDId", wiki}' cities.csv
+			awk -F',' 'BEGIN { nord=0.0; sud=0.0; est=0.0; oest=0.0; nu=0.0; wiki=0.0 } 
+			{ if (NR > 0) { 
+				nord += ( $9 > 0.0); 
+				sud += ( $9 < 0.0 ); 
+				est += ($10 > 0.0); 
+				oest += ($10 < 0.0); 
+				wiki += ($11 == ""); 
+				nu += ($10 == 0) && ($9 == 0) }
+		       	} END { print "Nord", nord, "Sud", sud, "Est", est, "Oest", oest, "No ubicació", nu, "No WDId", wiki}' cities.csv
 			;;
 		*)
 			echo "Sense argument vàlid"
