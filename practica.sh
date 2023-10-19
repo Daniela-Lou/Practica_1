@@ -72,7 +72,7 @@ while [[ $opcio!=q ]]; do #bucle
 			;;
 		'est') 
 			awk -F',' 'BEGIN { nord=0.0; sud=0.0; est=0.0; oest=0.0; nu=0.0; wiki=0.0 } 
-			{ if (NR > 0) { 
+			{ if (NR > 0) {  
 				nord += ( $9 > 0.0); 
 				sud += ( $9 < 0.0 ); 
 				est += ($10 > 0.0); 
@@ -80,7 +80,7 @@ while [[ $opcio!=q ]]; do #bucle
 				wiki += ($11 == ""); 
 				nu += ($10 == 0) && ($9 == 0) }
 		       	} END { print "Nord", nord, "Sud", sud, "Est", est, "Oest", oest, "No ubicació", nu, "No WDId", wiki}' cities.csv
-			;;
+			;; #NR és una variable interna de awk que determina el nombre de la línia
 		*)
 			echo "Sense argument vàlid"
 			;;			
