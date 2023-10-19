@@ -49,8 +49,8 @@ while [[ $opcio!=q ]]; do #bucle
 			;;
 
 		'ecp')
-			#Aquí està pensat perquè cada cop que es canvii de país, la llista substitueixi les dades anteriors per les noves i només crei 1 arxiu
-			cut -d',' -f2,7,11 cities.csv | grep -w $codiP | cut -d',' -f1,3 | column -s',' -t > PoblacionsPais.csv
+			#Aquí està pensat perquè cada cop que es canvii de país, la llista substitueixi les dades anteriors per les noves i només hi hagi 1 arxiu
+			cut -d',' -f2,7,11 cities.csv | grep -w $codiP | cut -d',' -f1,3 > PoblacionsPais.csv
 			mv PoblacionsPais.csv $codiP.csv 
 			;;
 		'lce')
@@ -58,8 +58,8 @@ while [[ $opcio!=q ]]; do #bucle
 			;;
 		
 		'ece')
-			cut -d',' -f2,4,7,11 cities.csv | grep -w $codiP | grep -w $codiE | cut -d',' -f1,4 | column -s',' -t > PoblacionsEstat.csv
-			mv PoblacionsEstat.csv ${codiP}_${codiE}.csv #Igual que l'ordre ecp
+			cut -d',' -f2,4,7,11 cities.csv | grep -w $codiP | grep -w $codiE | cut -d',' -f1,4 > PoblacionsEstat.csv
+			mv PoblacionsEstat.csv ${codiP}_${codiE}.csv #Igual que l'ordre ecp respecte la quantitat d'arxius
 			;;
 		'gwd')
 			read -p "Nom d'una població: " poblacio
@@ -67,7 +67,7 @@ while [[ $opcio!=q ]]; do #bucle
 			if [[ -n $wikiData ]]
 			then
 				curl https://www.wikidata.org/wiki/Special:EntityData/$widiData.json > wiki.json
-				mv wiki.json $wikiData.json #Igual que l'ordre ecp i ece
+				mv wiki.json $wikiData.json #Igual que l'ordre ecp i ece respecta la quantitat d'arxius
 			fi
 			;;
 		'est') 
