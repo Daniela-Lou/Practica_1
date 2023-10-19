@@ -9,7 +9,7 @@ while [[ $opcio!=q ]]; do #bucle
 	case $opcio in 
 		'q') 		
 			echo "Sortint de l'aplicació"
-			exit 0
+			exit 0 #Sortir del bucle de manera que no consta cap error
 			;;
 	
 		'lp')
