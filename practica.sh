@@ -70,17 +70,6 @@ while [[ $opcio!=q ]]; do #bucle
 				mv wiki.json $wikiData.json #Igual que l'ordre ecp i ece respecta la quantitat d'arxius
 			fi
 			;;
-		'est') 
-			awk -F',' 'BEGIN { nord=0.0; sud=0.0; est=0.0; oest=0.0; nu=0.0; wiki=0.0 } 
-			{ if (NR > 0) { 
-				nord += ( $9 > 0.0); 
-				sud += ( $9 < 0.0 ); 
-				est += ($10 > 0.0); 
-				oest += ($10 < 0.0); 
-				wiki += ($11 == ""); 
-				nu += ($10 == 0) && ($9 == 0) }
-		       	} END { print "Nord", nord, "Sud", sud, "Est", est, "Oest", oest, "No ubicació", nu, "No WDId", wiki}' cities.csv
-			;;
 		*)
 			echo "Sense argument vàlid"
 			;;			
