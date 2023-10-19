@@ -50,7 +50,7 @@ while [[ $opcio!=q ]]; do #bucle
 
 		'ecp')
 			#Aquí està pensat perquè cada cop que es canvii de país, la llista substitueixi les dades anteriors per les noves i només hi hagi 1 arxiu
-			cut -d',' -f2,7,11 cities.csv | grep -w $codiP | cut -d',' -f1,3 > PoblacionsPais.csv
+			cut -d',' -f2,7,11 cities.csv | grep -w $codiP | cut -d',' -f1,3 > PoblacionsPais.csv #No taula com en la foto d'exemple
 			mv PoblacionsPais.csv $codiP.csv 
 			;;
 		'lce')
@@ -58,7 +58,7 @@ while [[ $opcio!=q ]]; do #bucle
 			;;
 		
 		'ece')
-			cut -d',' -f2,4,7,11 cities.csv | grep -w $codiP | grep -w $codiE | cut -d',' -f1,4 > PoblacionsEstat.csv
+			cut -d',' -f2,4,7,11 cities.csv | grep -w $codiP | grep -w $codiE | cut -d',' -f1,4 > PoblacionsEstat.csv #No taula com la foto d'exemple
 			mv PoblacionsEstat.csv ${codiP}_${codiE}.csv #Igual que l'ordre ecp respecte la quantitat d'arxius
 			;;
 		'gwd')
@@ -66,7 +66,7 @@ while [[ $opcio!=q ]]; do #bucle
 			wikiData=$(cut -d',' -f2,4,7,11 cities.csv | grep -w $codiP | grep -w $codiE | grep -w ^$poblacio | cut -d',' -f4)
 			if [[ -n $wikiData ]]
 			then
-				curl https://www.wikidata.org/wiki/Special:EntityData/$widiData.json > wiki.json
+				curl https://www.wikidata.org/wiki/Special:EntityData/$widiData.json > wiki.json #La informació és correcta, només el format és dif
 				mv wiki.json $wikiData.json #Igual que l'ordre ecp i ece respecta la quantitat d'arxius
 			fi
 			;;
