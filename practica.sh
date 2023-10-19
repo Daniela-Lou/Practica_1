@@ -81,7 +81,7 @@ while [[ $opcio!=q ]]; do #bucle
 				nu += ($10 == 0) && ($9 == 0) }
 		       	} END { print "Nord", nord, "Sud", sud, "Est", est, "Oest", oest, "No ubicació", nu, "No WDId", wiki}' cities.csv
 			;; #NR és una variable interna de awk que determina el nombre de la línia
-		*)
+		*)#Qualsevol cosa que no sigui una des les opcions
 			echo "Sense argument vàlid"
 			;;			
 	esac
